@@ -1,7 +1,15 @@
-import { ApisauceInstance, create, ApiResponse } from "apisauce"
-import { getGeneralApiProblem } from "./api-problem"
-import { ApiConfig, DEFAULT_API_CONFIG } from "./api-config"
+import {ApiResponse, ApisauceInstance, create} from "apisauce"
+import {getGeneralApiProblem} from "./api-problem"
+import {ApiConfig, DEFAULT_API_CONFIG} from "./api-config"
 import * as Types from "./api.types"
+import { PostSnapshot } from "../../models";
+
+const convertPosts = (raw: any): PostSnapshot => ({
+    id: raw.id.toString(),
+    title: raw.title.rendered,
+    excerpt: raw.excerpt.rendered,
+    image: raw.better_featured_image.media_details.sizes.medium_large.source_url,
+})
 
 /**
  * Manages all requests to the API.
@@ -42,6 +50,28 @@ export class Api {
         Accept: "application/json",
       },
     })
+  }
+
+  /**
+   * Get the posts from Wordpress
+   */
+
+  async getPosts(): Promise<Types.GetPostsResult> {
+    const response: ApiResponse<any> = await this.apisauce.get("")
+
+    if (!response.ok) {
+      const problem = getGeneralApiProblem(response)
+      if (problem) return problem
+    }
+
+    try {
+      const convertedPosts: PostSnapshot[] = response.data.map(convertPosts)
+
+      return { kind: "ok", posts: convertedPosts }
+    } catch (e) {
+      __DEV__ && console.tron.log(e.message)
+      return { kind: "bad-data" }
+    }
   }
 
   /**

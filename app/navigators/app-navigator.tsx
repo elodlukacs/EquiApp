@@ -6,8 +6,8 @@
  */
 import React from "react"
 import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
-import { createStackNavigator } from "@react-navigation/stack"
-import { WelcomeScreen, DemoScreen, DemoListScreen } from "../screens"
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
+import { DemoScreen, DemoListScreen, PostsScreen} from "../screens"
 
 /**
  * This type allows TypeScript to know what routes are defined in this navigator
@@ -28,20 +28,21 @@ export type NavigatorParamList = {
 }
 
 // Documentation: https://reactnavigation.org/docs/stack-navigator/
-const Stack = createStackNavigator<NavigatorParamList>()
+// const Stack = createStackNavigator<NavigatorParamList>()
+const Tab = createBottomTabNavigator<NavigatorParamList>();
 
-const AppStack = () => {
+const AppTabNavigation = () => {
   return (
-    <Stack.Navigator
+    <Tab.Navigator
       screenOptions={{
         headerShown: false,
       }}
-      initialRouteName="welcome"
+      initialRouteName="posts"
     >
-      <Stack.Screen name="welcome" component={WelcomeScreen} />
-      <Stack.Screen name="demo" component={DemoScreen} />
-      <Stack.Screen name="demoList" component={DemoListScreen} />
-    </Stack.Navigator>
+      <Tab.Screen name="posts" component={PostsScreen} />
+      <Tab.Screen name="demo" component={DemoScreen} />
+      <Tab.Screen name="demoList" component={DemoListScreen} />
+    </Tab.Navigator>
   )
 }
 
@@ -51,7 +52,7 @@ export const AppNavigator = React.forwardRef<
 >((props, ref) => {
   return (
     <NavigationContainer {...props} ref={ref}>
-      <AppStack />
+      <AppTabNavigation />
     </NavigationContainer>
   )
 })

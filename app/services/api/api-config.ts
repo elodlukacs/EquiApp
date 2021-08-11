@@ -1,7 +1,7 @@
 // Use this import if you want to use "env.js" file
 // const { API_URL } = require("../../config/env")
 // Or just specify it directly like this:
-const API_URL = "http://example.com"
+// const API_URL = "http://example.com"
 
 /**
  * The options used to configure the API.
@@ -22,6 +22,7 @@ export interface ApiConfig {
  * The default configuration for the app.
  */
 export const DEFAULT_API_CONFIG: ApiConfig = {
-  url: API_URL || "https://jsonplaceholder.typicode.com",
+  // url: "https://swapi.dev/api/people/",
+  url: "https://equitransylvania.com/wp-json/wp/v2/pages?include=100,174,178,176",
   timeout: 10000,
 }
