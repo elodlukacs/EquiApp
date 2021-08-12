@@ -68,7 +68,7 @@ export class Reactotron {
     // merge the passed in config with some defaults
     this.config = {
       host: "localhost",
-      useAsyncStorage: true,
+      useAsyncStorage: false,
       ...config,
       state: {
         initial: false,

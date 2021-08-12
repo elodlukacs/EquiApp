@@ -7,7 +7,8 @@
 import React from "react"
 import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
-import { DemoScreen, DemoListScreen, PostsScreen} from "../screens"
+import { DemoScreen, DemoListScreen } from "../screens"
+import { PostsStackNavigation } from "./posts-navigator";
 
 /**
  * This type allows TypeScript to know what routes are defined in this navigator
@@ -25,6 +26,7 @@ export type NavigatorParamList = {
   welcome: undefined
   demo: undefined
   demoList: undefined
+  postList: undefined
 }
 
 // Documentation: https://reactnavigation.org/docs/stack-navigator/
@@ -37,13 +39,13 @@ const AppTabNavigation = () => {
       screenOptions={{
         headerShown: false,
       }}
-      initialRouteName="posts"
+      initialRouteName="demo"
     >
-      <Tab.Screen name="posts" component={PostsScreen} />
+      <Tab.Screen name="postList" component={PostsStackNavigation} />
       <Tab.Screen name="demo" component={DemoScreen} />
       <Tab.Screen name="demoList" component={DemoListScreen} />
     </Tab.Navigator>
-  )
+  );
 }
 
 export const AppNavigator = React.forwardRef<
@@ -68,5 +70,5 @@ AppNavigator.displayName = "AppNavigator"
  *
  * `canExit` is used in ./app/app.tsx in the `useBackButtonHandler` hook.
  */
-const exitRoutes = ["welcome"]
+const exitRoutes = ["postList"]
 export const canExit = (routeName: string) => exitRoutes.includes(routeName)

@@ -16,6 +16,7 @@ export const PostStoreModel = types
   .actions((self) => ({
     savePosts: (postsSnapshots: PostSnapshot[]) => {
       const postModels: Post[] = postsSnapshots.map(post => PostModel.create(post))
+
       self.posts.replace(postModels)
     },
   }))

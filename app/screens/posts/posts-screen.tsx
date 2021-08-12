@@ -1,10 +1,11 @@
-import React, {useEffect, useState} from "react"
+import React, { useEffect } from "react"
 import { observer } from "mobx-react-lite"
-import {ViewStyle, View, FlatList, Image, ImageStyle, TextStyle} from "react-native"
+import { ViewStyle, View, FlatList, Image, ImageStyle, TextStyle, Pressable } from "react-native"
 import { Screen, Text } from "../../components"
 // import { useNavigation } from "@react-navigation/native"
 import { useStores } from "../../models"
 import { color } from "../../theme"
+// import { useNavigation } from "@react-navigation/native";
 
 const ROOT: ViewStyle = {
   backgroundColor: color.palette.black,
@@ -38,35 +39,33 @@ const SINGLE_POST: ViewStyle = {
 }
 
 export const PostsScreen = observer(function PostsScreen() {
+  // const navigation = useNavigation()
   // Pull in one of our MST stores
-  const [refreshing, setRefreshing] = useState(false);
   const { postStore } = useStores()
   const { posts } = postStore
 
+
   useEffect(() => {
-    // postStore.getPosts()
-    fetchPosts()
+    postStore.getPosts()
     console.log('---------')
   }, [])
 
-  const fetchPosts = () => {
-    setRefreshing(true)
-    postStore.getPosts()
-    setRefreshing(false)
+  const handleOnPress = () => {
+    console.log('ONPRESS !!!')
   }
 
   const renderPosts = ({ item }) => {
     return (
-      <View style={SINGLE_POST}>
-        <Text text={item.title} style={TITLE} />
-        <Image source={{ uri: item.image }} style={IMAGE} />
-        <Text text={item.excerpt.replace(/<\/?[^>]+>/gi, "")}/>
-      </View>
+      <Pressable onPress={handleOnPress}>
+        <View style={SINGLE_POST}>
+          <Text text={item.title} style={TITLE} />
+          <Image source={{ uri: item.image }} style={IMAGE} />
+          <Text text={item.excerpt.replace(/<\/?[^>]+>/gi, "")}/>
+        </View>
+      </Pressable>
     )
   }
 
-  // Pull in navigation via hook
-  // const navigation = useNavigation()
   return (
     <Screen style={ROOT} preset="fixed">
       <Text style={HEADER_TEXT} preset="header" text="Posts" />
@@ -74,8 +73,6 @@ export const PostsScreen = observer(function PostsScreen() {
         data={posts}
         extraData={{ extraDataForMobX: posts.length > 0 ? posts[0].title : "" }}
         keyExtractor={(item) => item.id}
-        onRefresh={fetchPosts}
-        refreshing={refreshing}
         renderItem={renderPosts}
       />
     </Screen>
