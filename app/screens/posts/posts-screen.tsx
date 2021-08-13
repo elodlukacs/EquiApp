@@ -2,10 +2,9 @@ import React, { useEffect } from "react"
 import { observer } from "mobx-react-lite"
 import { ViewStyle, View, FlatList, Image, ImageStyle, TextStyle, Pressable } from "react-native"
 import { Screen, Text } from "../../components"
-// import { useNavigation } from "@react-navigation/native"
 import { useStores } from "../../models"
 import { color } from "../../theme"
-// import { useNavigation } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 
 const ROOT: ViewStyle = {
   backgroundColor: color.palette.black,
@@ -39,7 +38,7 @@ const SINGLE_POST: ViewStyle = {
 }
 
 export const PostsScreen = observer(function PostsScreen() {
-  // const navigation = useNavigation()
+  const navigation = useNavigation()
   // Pull in one of our MST stores
   const { postStore } = useStores()
   const { posts } = postStore
@@ -50,13 +49,13 @@ export const PostsScreen = observer(function PostsScreen() {
     console.log('---------')
   }, [])
 
-  const handleOnPress = () => {
-    console.log('ONPRESS !!!')
+  const handleOnPress = (id: number): void => {
+    console.log('ONPRESS !!!', id)
   }
 
   const renderPosts = ({ item }) => {
     return (
-      <Pressable onPress={handleOnPress}>
+      <Pressable onPress={() => navigation.navigate("PostDetails", {id : item.id})}>
         <View style={SINGLE_POST}>
           <Text text={item.title} style={TITLE} />
           <Image source={{ uri: item.image }} style={IMAGE} />

@@ -1,16 +1,22 @@
 import React  from "react"
 // import { observer } from "mobx-react-lite"
-import { ViewStyle, TextStyle } from "react-native"
+import {ViewStyle, TextStyle, Image, ImageStyle} from "react-native"
 import { Screen, Text } from "../../components"
-// import { useNavigation } from "@react-navigation/native"
-// import { useStores } from "../../models"
 import { color } from "../../theme"
+import { useStores } from "../../models";
 // import { useNavigation } from "@react-navigation/native";
 
 const ROOT: ViewStyle = {
   backgroundColor: color.palette.black,
   flex: 1,
   paddingHorizontal: 10
+}
+
+const IMAGE: ImageStyle = {
+  borderRadius: 2,
+  width: 380,
+  height: 120,
+  marginVertical: 20
 }
 
 const HEADER_SPACING: ViewStyle = {
@@ -22,15 +28,20 @@ const HEADER_TEXT: TextStyle = {
   fontSize: 34
 }
 
-export const PostDetails = () => {
+export const PostDetails = ({ route: { params: { id } } }) => {
   // const navigation = useNavigation()
   // Pull in one of our MST stores
-  // const { postStore } = useStores()
-  // const { posts } = postStore
+  const { postStore } = useStores()
+  const { posts } = postStore
+
+  const [selectedPost] = posts.filter(post => post.id === id)
+  const { title, image, excerpt } = selectedPost
 
   return (
     <Screen style={ROOT} preset="fixed">
-      <Text style={HEADER_TEXT} preset="header" text="Single Post supposed to be ...." />
+      <Text style={HEADER_TEXT} preset="header" text={title} />
+      <Image source={{ uri: image }} style={IMAGE} />
+      <Text text={excerpt} />
     </Screen>
   )
 }
